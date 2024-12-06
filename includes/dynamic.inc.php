@@ -22,7 +22,11 @@ function generateMainContent($connection){
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //
 function generateAboutMeParagraphs($connection){
-	// TODO
+$sqlPar = "SELECT aPara1 FROM aboutme";
+$result = $connection->query($sqlPar);
+$rowPar = $result->fetch_assoc();
+$content = $rowPar["aPara1"];
+
     return $content;
 }
 
@@ -36,12 +40,17 @@ function generateAboutMeParagraphs($connection){
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //
 function generateColor($blockName, $connection){
-	// TODO
+
+
+	
 }
 
 function generateDefaColor($blockName, $connection){
-	// TODO
-    return $content;
+$sql1 = "SELECT cHexColor FROM colors WHERE cBlockNo=$blockName";
+$result1 = $connection->query($sql1);
+$row1 = $result1->fetch_assoc();
+$color = $row1["cHexColor"];
+return $color;
 }
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -65,7 +74,8 @@ function storeAboutMeColor($hexColor, $connection){
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //
 function storeAboutMeParagraphs($ary, $connection){
-	// TODO
+
+	
 }
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -119,8 +129,55 @@ function storeResumeItem($ary, $connection){
 //
 function loginCredentials($user, $pass, $connection){
     $isOK = false;
-	// TODO
-    return $isOK;
+	$re = "/[a-z]+/";
+
+//get data from "users" table
+$sql = "SELECT uName, uPass FROM users";
+$result = $connection->query($sql);
+$row = $result->fetch_assoc();
+
+	//make sure input is correct
+	if (($_GET["userName"] == $row["uName"]) && ($_GET["passWord"] == $row["uPass"])){
+	//set isOK to true
+	$isOK = true;
+
+	//remove "login" widgets and labels
+	echo '<script type="text/javascript">
+	let remoce = document.querySelector("form");
+	remoce.remove();
+	</script>';
+
+	 //get the current color value
+	$color = generateDefaColor(2,$connection);
+	//add the new elements
+	echo '<script type="text/javascript">
+	let head = document.getElementById("ccmm");
+	let edit = document.createElement("h2");
+	head.appendChild(edit);
+	edit.textContent = "Edit About Me Settings";
+	let background = document.createElement("p");
+	background.textContent = "Background Color";
+	edit.appendChild(background);
+	let form = document.createElement("form");
+	background.appendChild(form);
+	form.action = "cmmodule.php";
+	form.method = "GET";
+	let color = document.createElement("input");
+	form.appendChild(color);
+	background.id = "back";
+	color.type = "color";
+	color.id = "colorpicker";
+	color.name = "colorpicker";
+	color.onchange = "clickColor(0, -1, -1, 5)";
+	color.value = "htmlspecialchars($color)";
+	color.style = "width:100px";
+	</script>'; 
+	
+	//add submit button to form
+}
+
+return $isOK;
+
 }
 
 ?>

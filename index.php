@@ -5,6 +5,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script>
+//validate the contact me form
+function validateForm(){
+    let re = /[a-z]+/;
+    let edu = /(\w*(.\w?)(.\w*.\w*)?@bgsu.edu)$|^(\w*.\w*@bgnet.bgsu.edu)$/;
+    let re = /[a-z]+/;
+    let mail = document.getElementById("1email").value;
+   if(!edu.test(mail)){
+    return false;
+   }
+   let user = document.getElementById("name").value;
+   if (!re.test(user)) {
+    return false;
+   }
+   let message = document.getElementById("message").value;
+   if (!re.test(message)) {
+    return false;
+   }
+}
+
+
+  </script>
 </head>
 <body class="w3-content" style="max-width:1300px">
 
@@ -134,18 +156,18 @@
       <h1>Contact</h1>
       <p class="w3-opacity">GET IN TOUCH</p>
       <!--validate with JS-->
-      <form class="w3-container w3-card w3-padding-32 w3-white" action="/action_page.php" target="_blank">
+      <form class="w3-container w3-card w3-padding-32 w3-white" action="/action_page.php" target="_blank" onsubmit="return validateForm()">
         <div class="w3-section">
           <label>Name</label>
-          <input class="w3-input" style="width:100%;" type="text" required name="Name">
+          <input class="w3-input" style="width:100%;" type="text" required name="Name" id="name">
         </div>
         <div class="w3-section">
           <label>Email</label>
-          <input class="w3-input" style="width:100%;" type="text" required name="Email">
+          <input class="w3-input" style="width:100%;" type="text" required name="Email" id="1email"> 
         </div>
         <div class="w3-section">
           <label>Message</label>
-          <input class="w3-input" style="width:100%;" type="text" required name="Message">
+          <input class="w3-input" style="width:100%;" type="text" required name="Message" id="message">
         </div>
         <button type="submit" class="w3-button w3-teal w3-right">Send</button>
       </form>

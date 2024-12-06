@@ -16,7 +16,7 @@ textarea {
   <div class="w3-padding-64 w3-center">
     <h1 id="ccmm">Content Maneger Module</h1>
     <div class="w3-left-align w3-padding-large">
-      <a href="index.php">Back To Home</a>
+      <a href="index.php" id="backToHome">Back To Home</a>
       <span id="error"></span><br>
       <form action="cmmodule.php" method="GET">
         <label for="username" class="removes">UserName</label>
@@ -58,44 +58,39 @@ $conn = new mysqli($servername, $username, $password, $database);
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
-echo "<p>Connected successfully</p>";
 
-//get data from "users" table
-$sql = "SELECT uName, uPass FROM users";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
-
-//make sure input is validated
+//validate user input
 if(preg_match($re , $_GET["userName"]) && preg_match($re , $_GET["passWord"])) {
+   //attemp login
+ loginCredentials(1,1,$conn);
+ //once complete, move to getting current values that are going to be modded
 
-//check to make sure the username and password are in table
-  if ( !($_GET["userName"] == $row["uName"]) && !($_GET["passWord"] == $row["uPass"])){
-    echo "<p>incorrect login info</p>";
-  }
-  else{
-    echo $_GET["userName"]. " ". $_GET["passWord"] . " is correct";
 
-//run JS within php to edit the current page to change to the editing of the color and text portion
-//remove "login" widgets and labels
-    echo '<script type="text/javascript">
-     let remoce = document.querySelector("form");
-     remoce.remove(); 
-  </script>';
+ $content = generateAboutMeParagraphs($conn);
+ echo $content;
+// get the first paragraph
+echo '<script type="text/javascript">
+  	let para1 = document.createElement("textarea");
+	form.appendChild(para1);
+	background.id = "back";
+	para1.type = "color";
+	para1.id = "colorpicker";
+	para1.name = "colorpicker";
+	para1.rows = "5";
+  para1.cols = "50";
+  //para1.value = "htmlspecialchars($content)";
 
-//change to the edit about me view
-  echo '
-  <h2> Edit About Me Settings</h2>
-  <p>Background Color</p>
-  <input type="color" id="html5colorpicker" onchange="clickColor(0, -1, -1, 5)" value="#ff0000" style="width:100px;">
-  ';
-  }
-  //get value from color picker. put into database
-$conn->close();
+	</script>';      
+
+
+  
 }
-
+//if input is not valid, tell user  
 else{
-  echo "enter valid input";
+  echo "invalid input";
 }
+//close the connection to database
+$conn->close();
 
 ?>
 </div>
