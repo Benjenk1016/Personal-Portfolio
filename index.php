@@ -10,7 +10,6 @@
 function validateForm(){
     let re = /[a-z]+/;
     let edu = /(\w*(.\w?)(.\w*.\w*)?@bgsu.edu)$|^(\w*.\w*@bgnet.bgsu.edu)$/;
-    let re = /[a-z]+/;
     let mail = document.getElementById("1email").value;
    if(!edu.test(mail)){
     return false;
@@ -24,10 +23,36 @@ function validateForm(){
     return false;
    }
 }
+function resumeGen(){
+//use XML request 
+let xhr = new XMLHttpRequest();
+xhr.addEventListener("load", function () {
+  let ff = document.getElementById("st");
+  if (this.status === 200) {
+let json = this.response;
+ff.innerHTML = "<td>" + json.rYearRange +"</td>";
+  }
+}); 
+xhr.responseype = "json";
+xhr.open('GET', 'resume.json');
+xhr.send();
+
+
+}
 
 
   </script>
 </head>
+<?php
+include("./includes/define.inc.php");
+include("./includes/dynamic.inc.php");
+$database = "a09_Jenkins";
+$servername = "localhost";
+$username = "root";
+$password = "";
+// Create connection
+$conn = new mysqli($servername, $username, $password, $database);
+?>
 <body class="w3-content" style="max-width:1300px">
 
 <!-- First Grid: Logo & About -->
@@ -49,8 +74,10 @@ function validateForm(){
       <h1>About Me</h1>
       <img src="  images\img_avatar.png" class="w3-margin w3-circle" alt="Person" style="width:20%">
       <div class="w3-left-align w3-padding-large">
-        <p>Lorem ipusm sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
-        <p>Lorem ipusm sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+        <!-- make about me paragraphs dynamically generate-->
+        <p><?php  echo generateAboutMeParagraphs($conn,1);?></p>
+        <p> <?php echo generateAboutMeParagraphs($conn,2);?> </p>
+        <p> <?php echo generateAboutMeParagraphs($conn,3);?> </p>
       </div>
     </div>
   </div>
@@ -96,38 +123,44 @@ function validateForm(){
       <!-- make this come from the database-->
       <p>A draft from my CV</p>
       <div class="w3-container w3-responsive">
+
         <table class="w3-table">
           <tr>
             <th>Year</th>
             <th>Title</th>
             <th>Where</th>
           </tr>
-          <tr class="w3-white">
+          <tr class="w3-white" id="st">
+<script>
+//function to genterate resume content
+resumeGen;
+</script>
+
             <td>2012-2016</td>
             <td>The rest is history..</td>
             <td>Lorem ipsum</td>
           </tr>
-          <tr>
+          <tr id="sec">
             <td>2009-2012</td>
             <td>Started my own company</td>
             <td>My Garage</td>
           </tr>
-          <tr class="w3-white">
+          <tr class="w3-white" id="third">
             <td>2008-2009</td>
             <td>Started working for Lorem</td>
             <td>London, UK</td>
           </tr>
-          <tr>
+          <tr id="fourth">
             <td>2005-2008</td>
             <td>Degree in Bachelor of Design</td>
             <td>Harvard, USA</td>
           </tr>
-          <tr class="w3-white">
+          <tr class="w3-white" id="fith">
             <td>2002-2005</td>
             <td>Degree in Bachelor of Business</td>
             <td>RMIT University, Melbourne, Australia</td>
           </tr>
-          <tr class="w3-hide-medium">
+          <tr class="w3-hide-medium" id="sixth">
             <td>2002-2005</td>
             <td>Degree in Bachelor of Business</td>
             <td>RMIT University, Melbourne, Australia</td>

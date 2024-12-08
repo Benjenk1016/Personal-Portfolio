@@ -21,8 +21,8 @@ function generateMainContent($connection){
 // Returns:		Returns HTML via return statement.
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //
-function generateAboutMeParagraphs($connection){
-$sqlPar = "SELECT aPara1 FROM aboutme";
+function generateAboutMeParagraphs($connection,$num){
+$sqlPar = "SELECT aPara1 FROM aboutme WHERE aID=$num";
 $result = $connection->query($sqlPar);
 $rowPar = $result->fetch_assoc();
 $content = $rowPar["aPara1"];
@@ -48,7 +48,7 @@ function generateColor($blockName, $connection){
 function generateDefaColor($blockName, $connection){
 $sql1 = "SELECT cHexColor FROM colors WHERE cBlockNo=$blockName";
 $result1 = $connection->query($sql1);
-$row1 = $result1->fetch_assoc();
+$row1 = $result1->fetch_assoc();	
 $color = $row1["cHexColor"];
 return $color;
 }
@@ -62,7 +62,11 @@ return $color;
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //
 function storeAboutMeColor($hexColor, $connection){
-	// TODO
+	//update the color column of the colors table for the about me background
+	$sql = "UPDATE colors SET cHexColor = '$hexColor' WHERE cBlockNo = '2'";
+	$connection->query($sql);
+
+	
 }
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -74,7 +78,9 @@ function storeAboutMeColor($hexColor, $connection){
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //
 function storeAboutMeParagraphs($ary, $connection){
-
+	//update the about me table to have the aPara1 to have the current input
+	$sqlCol = "UPDATE aboutme SET aPara1 = '$ary' WHERE aID = '1'";
+	$connection->query($sqlCol);
 	
 }
 
@@ -145,33 +151,15 @@ $row = $result->fetch_assoc();
 	echo '<script type="text/javascript">
 	let remoce = document.querySelector("form");
 	remoce.remove();
+	
+	
+
 	</script>';
 
 	 //get the current color value
 	$color = generateDefaColor(2,$connection);
 	//add the new elements
-	echo '<script type="text/javascript">
-	let head = document.getElementById("ccmm");
-	let edit = document.createElement("h2");
-	head.appendChild(edit);
-	edit.textContent = "Edit About Me Settings";
-	let background = document.createElement("p");
-	background.textContent = "Background Color";
-	edit.appendChild(background);
-	let form = document.createElement("form");
-	background.appendChild(form);
-	form.action = "cmmodule.php";
-	form.method = "GET";
-	let color = document.createElement("input");
-	form.appendChild(color);
-	background.id = "back";
-	color.type = "color";
-	color.id = "colorpicker";
-	color.name = "colorpicker";
-	color.onchange = "clickColor(0, -1, -1, 5)";
-	color.value = "htmlspecialchars($color)";
-	color.style = "width:100px";
-	</script>'; 
+	
 	
 	//add submit button to form
 }
