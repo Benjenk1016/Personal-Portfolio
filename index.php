@@ -92,27 +92,27 @@ $conn = new mysqli($servername, $username, $password, $database);
     </div>
     <div class="w3-row">
       <div class="w3-half">
-        <img src="images\gettyimages-584791924.jpg" style="width:100%"> 
+        <img src="images\gettyimages-584791924.jpg" style="width:325px" height="175px"> 
       </div>
       <div class="w3-half">
-        <img src="images\tokyoGettyImages-1031467664.webp" style="width:100%">
+        <img src="images\tokyoGettyImages-1031467664.webp" style="width:325px" height="175px">
       </div>
     </div>
     <div class="w3-row w3-hide-small">
       <div class="w3-half">
-        <img src="images\peak.jpg" style="width:100%">
+        <img src="images\peak.jpg"style="width:325px" height="175px">
       </div>
       <div class="w3-half">
-        <img src="images\bowling_green_state_university_cover.jpg" style="width:100%">
+        <img src="images\bowling_green_state_university_cover.jpg" style="width:325px" height="175px">
       </div>
     </div>
 
     <div class="w3-row w3-hide-small">
       <div class="w3-half">
-        <img src="images\best-islands-to-visit-in-hawaii.jpg.webp" style="width:100%">
+        <img src="images\best-islands-to-visit-in-hawaii.jpg.webp" style="width:325px" height="175px">
       </div>
       <div class="w3-half">
-        <img src="images\bright-pink-sunset.jpg" style="width:100%">
+        <img src="images\bright-pink-sunset.jpg" style="width:325px" height="175px">
       </div>
     </div><br>
     <p>Just call me awesome.</p>
