@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A09 Jenkins Project Walkthrough</title>
+<style>
+  :root {
+    --bg: #f4efe7;
+    --panel: #fffaf4;
+    --panel-strong: #f0e2cf;
+    --text: #1f1f1f;
+    --muted: #5d574f;
+    --accent: #9f3d2e;
+    --accent-dark: #6c261c;
+    --line: #dccab2;
+    --shadow: 0 20px 50px rgba(54, 33, 17, 0.10);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--text);
+    background:
+      radial-gradient(circle at top left, rgba(159, 61, 46, 0.10), transparent 30%),
+      linear-gradient(180deg, #f8f2ea 0%, var(--bg) 100%);
+    line-height: 1.6;
+  }
+
+  a {
+    color: var(--accent-dark);
+  }
+
+  header {
+    padding: 64px 24px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    margin: 0 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.4rem, 5vw, 4.8rem);
+    line-height: 0.95;
+    max-width: 10ch;
+  }
+
+  .lead {
+    max-width: 760px;
+    margin: 20px 0 0;
+    font-size: 1.1rem;
+    color: var(--muted);
+  }
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  nav {
+    margin: 0 0 28px;
+    padding: 16px 18px;
+    background: rgba(255, 250, 244, 0.88);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+  }
+
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  nav a {
+    display: inline-block;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 999px;
+    background: var(--panel-strong);
+  }
+
+  section {
+    margin-top: 24px;
+    padding: 28px;
+    background: rgba(255, 250, 244, 0.94);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+  }
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 14px;
+    font-size: 2rem;
+  }
+
+  h3 {
+    margin-bottom: 10px;
+    font-size: 1.15rem;
+  }
+
+  p,
+  li,
+  td,
+  th {
+    font-size: 1rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
+
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .step {
+    padding: 16px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #fff9f3 0%, #f7e8d7 100%);
+    border: 1px solid var(--line);
+    position: relative;
+  }
+
+  .step strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--accent-dark);
+  }
+
+  code {
+    font-family: Consolas, "Courier New", monospace;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: #efe2d0;
+    font-size: 0.95em;
+  }
+
+  pre {
+    overflow-x: auto;
+    padding: 18px;
+    border-radius: 18px;
+    background: #241a16;
+    color: #f9ead8;
+    border: 1px solid #5e4238;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 18px;
+  }
+
+  .callout {
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: #fff1e8;
+    border-radius: 12px;
+    margin: 16px 0;
+  }
+
+  .small {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 800px) {
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+
+    section {
+      padding: 22px;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="hero">
+    <p class="eyebrow">Project Guide</p>
+    <h1>A09 Jenkins Walkthrough</h1>
+    <p class="lead">
+      This document is a full-map explanation of the project: what it is, which files matter,
+      how requests move through the app, how Docker and hot reload work, what the database stores,
+      and which parts are incomplete or legacy.
+    </p>
+  </div>
+</header>
+
+<main>
+  <nav>
+    <ul>
+      <li><a href="#big-picture">Big Picture</a></li>
+      <li><a href="#file-map">File Map</a></li>
+      <li><a href="#request-flow">Request Flow</a></li>
+      <li><a href="#runtime">Runtime</a></li>
+      <li><a href="#database">Database</a></li>
+      <li><a href="#front-end">Front End</a></li>
+      <li><a href="#maintainer-notes">Maintainer Notes</a></li>
+    </ul>
+  </nav>
+
+  <section id="big-picture">
+    <h2>1. Big Picture</h2>
+    <p>
+      This is a small PHP portfolio site with a basic content management module. The public page is served by
+      <code>index.php</code>. Content comes partly from the database, especially the About Me text and color settings.
+      There is also a separate content manager at <code>cmmodule.php</code> that lets an authenticated user update some of that content.
+    </p>
+    <div class="grid">
+      <div class="card">
+        <h3>Primary Purpose</h3>
+        <p>Display a personal portfolio page with an editable About Me section.</p>
+      </div>
+      <div class="card">
+        <h3>Main Stack</h3>
+        <p>PHP 8.2, Apache, MariaDB, BrowserSync, Docker Compose.</p>
+      </div>
+      <div class="card">
+        <h3>Main Entry Points</h3>
+        <p><code>index.php</code>, <code>cmmodule.php</code>, and <code>process.php</code>.</p>
+      </div>
+      <div class="card">
+        <h3>Current State</h3>
+        <p>Runs in Docker and supports live reload for development, but several app features are still partially implemented.</p>
+      </div>
+    </div>
+    <div class="callout">
+      The codebase is not structured as MVC. Presentation, data access, and control flow are mixed directly inside the PHP files.
+      That is the single most important thing to know before you read the code.
+    </div>
+  </section>
+
+  <section id="file-map">
+    <h2>2. File Map</h2>
+    <div class="two-col">
+      <div>
+        <h3>Top-level application files</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>index.php</code></td>
+              <td>Main public portfolio page. Connects to the database and renders the visible site.</td>
+            </tr>
+            <tr>
+              <td><code>cmmodule.php</code></td>
+              <td>Login page and edit interface for the content manager.</td>
+            </tr>
+            <tr>
+              <td><code>process.php</code></td>
+              <td>Handles updates submitted from the content manager and writes them to the database.</td>
+            </tr>
+            <tr>
+              <td><code>project-walkthrough.html</code></td>
+              <td>This documentation file.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Includes folder</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>includes/define.inc.php</code></td>
+              <td>Global constants plus environment-driven helpers such as base URL and live reload script rendering.</td>
+            </tr>
+            <tr>
+              <td><code>includes/dynamic.inc.php</code></td>
+              <td>Database-backed helper functions for reading and writing app content.</td>
+            </tr>
+            <tr>
+              <td><code>includes/db.inc.php</code></td>
+              <td>Database connection helper. Reads env vars and returns a <code>mysqli</code> connection.</td>
+            </tr>
+            <tr>
+              <td><code>includes/footer.inc.php</code></td>
+              <td>Footer markup and live reload script output.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h3>Support folders</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Folder</th>
+              <th>What is inside</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>images/</code></td>
+              <td>Static gallery and avatar images used by the public page.</td>
+            </tr>
+            <tr>
+              <td><code>js/</code></td>
+              <td>Contains <code>script.js</code>, but that file is currently empty.</td>
+            </tr>
+            <tr>
+              <td><code>json/</code></td>
+              <td>Contains <code>resumemodded.json</code>, a resume data file that appears to be intended for future use.</td>
+            </tr>
+            <tr>
+              <td><code>sql/</code></td>
+              <td>Database dumps. The active one for Docker is <code>a09_jenkins.sql</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Runtime and tooling files</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>docker-compose.yml</code></td>
+              <td>Defines the web, dev, and db containers.</td>
+            </tr>
+            <tr>
+              <td><code>Dockerfile</code></td>
+              <td>Builds the PHP 8.2 + Apache image and enables <code>mysqli</code>.</td>
+            </tr>
+            <tr>
+              <td><code>package.json</code></td>
+              <td>Defines the BrowserSync dev workflow for hot reload.</td>
+            </tr>
+            <tr>
+              <td><code>.env.example</code></td>
+              <td>Documents the environment variables used by Docker Compose.</td>
+            </tr>
+            <tr>
+              <td><code>README.md</code></td>
+              <td>Practical setup instructions for running the project.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="request-flow">
+    <h2>3. Request Flow</h2>
+    <p>The easiest way to understand the code is to follow the request paths.</p>
+
+    <h3>Public site flow</h3>
+    <div class="flow">
+      <div class="step">
+        <strong>1. Browser requests index.php</strong>
+        PHP loads the constants, helper functions, and database connection helper.
+      </div>
+      <div class="step">
+        <strong>2. index.php opens a database connection</strong>
+        The page calls <code>getDbConnection()</code> from <code>includes/db.inc.php</code>.
+      </div>
+      <div class="step">
+        <strong>3. About Me content is loaded</strong>
+        <code>generateAboutMeParagraphs()</code> reads rows from the <code>aboutme</code> table.
+      </div>
+      <div class="step">
+        <strong>4. Static sections render</strong>
+        The image gallery, resume table, and contact form are mostly hard-coded HTML.
+      </div>
+      <div class="step">
+        <strong>5. Footer is appended</strong>
+        <code>footer.inc.php</code> prints footer content and the live reload client script.
+      </div>
+    </div>
+
+    <h3>Content manager flow</h3>
+    <div class="flow">
+      <div class="step">
+        <strong>1. User opens cmmodule.php</strong>
+        The page includes helper files and immediately renders the login form using <code>create()</code>.
+      </div>
+      <div class="step">
+        <strong>2. Login is submitted through GET</strong>
+        <code>userName</code> and <code>passWord</code> are checked with a simple regex and compared against the database.
+      </div>
+      <div class="step">
+        <strong>3. On success, edit UI is built in JavaScript</strong>
+        <code>editpage()</code> injects a color picker, textarea, and submit button into the DOM.
+      </div>
+      <div class="step">
+        <strong>4. process.php stores updates</strong>
+        If <code>colorpicker</code> and <code>para1</code> are present in the query string, the page updates the database.
+      </div>
+      <div class="step">
+        <strong>5. index.php shows updated content</strong>
+        The public page reflects database changes on the next load.
+      </div>
+    </div>
+
+    <h3>Condensed runtime map</h3>
+    <pre>User browser
+  -> index.php
+     -> includes/define.inc.php
+     -> includes/dynamic.inc.php
+     -> includes/db.inc.php
+     -> MariaDB
+
+User browser
+  -> cmmodule.php
+     -> process.php
+     -> includes/dynamic.inc.php
+     -> includes/db.inc.php
+     -> MariaDB</pre>
+  </section>
+
+  <section id="runtime">
+    <h2>4. Runtime, Docker, and Hot Reload</h2>
+    <p>
+      The project no longer depends on XAMPP. It now runs through Docker Compose with three services.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Technology</th>
+          <th>Responsibility</th>
+          <th>Default Port</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>web</code></td>
+          <td>PHP 8.2 + Apache</td>
+          <td>Serves the PHP app from the project root.</td>
+          <td>8080</td>
+        </tr>
+        <tr>
+          <td><code>dev</code></td>
+          <td>Node 20 + BrowserSync</td>
+          <td>Watches source files and triggers browser refresh.</td>
+          <td>3000 / 3001</td>
+        </tr>
+        <tr>
+          <td><code>db</code></td>
+          <td>MariaDB 11.4</td>
+          <td>Stores app data and seeds it from SQL on first startup.</td>
+          <td>3307</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Docker entrypoint</h3>
+        <p><code>docker compose up --build</code> starts all services.</p>
+      </div>
+      <div class="card">
+        <h3>Primary app URL</h3>
+        <p><code>http://localhost:8080</code></p>
+      </div>
+      <div class="card">
+        <h3>Live reload URL</h3>
+        <p><code>http://localhost:3000</code></p>
+      </div>
+      <div class="card">
+        <h3>BrowserSync UI</h3>
+        <p><code>http://localhost:3001</code></p>
+      </div>
+    </div>
+
+    <h3>How hot reload works</h3>
+    <p>
+      The code is bind-mounted into the containers. That means file edits on the host are immediately visible inside the PHP and Node containers.
+      BrowserSync watches PHP, JS, CSS, and HTML files. The app emits a client script URL through the <code>LIVE_RELOAD_URL</code> environment variable,
+      and the script gets injected into the rendered page through the footer and content manager page.
+    </p>
+
+    <h3>Important environment variables</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>DB_HOST</code></td>
+          <td>Database host for PHP to connect to.</td>
+        </tr>
+        <tr>
+          <td><code>DB_PORT</code></td>
+          <td>Database port used by the application.</td>
+        </tr>
+        <tr>
+          <td><code>DB_NAME</code></td>
+          <td>Database name, defaulting to <code>a09_jenkins</code>.</td>
+        </tr>
+        <tr>
+          <td><code>DB_USER</code></td>
+          <td>Database username.</td>
+        </tr>
+        <tr>
+          <td><code>DB_PASSWORD</code></td>
+          <td>Database password.</td>
+        </tr>
+        <tr>
+          <td><code>WEBSITE_URL</code></td>
+          <td>Base URL exposed to the PHP app.</td>
+        </tr>
+        <tr>
+          <td><code>LIVE_RELOAD_URL</code></td>
+          <td>BrowserSync client script used for live reload.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="database">
+    <h2>5. Database and Seed Data</h2>
+    <p>
+      The active database dump is <code>sql/a09_jenkins.sql</code>. Docker mounts that file into MariaDB on first startup,
+      which creates the schema and inserts initial rows.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Table</th>
+          <th>Columns</th>
+          <th>Used for</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>aboutme</code></td>
+          <td><code>aID</code>, <code>aPara1</code></td>
+          <td>Stores the three About Me paragraph rows shown on the public page.</td>
+        </tr>
+        <tr>
+          <td><code>colors</code></td>
+          <td><code>cID</code>, <code>cName</code>, <code>cBlockNo</code>, <code>cHexColor</code></td>
+          <td>Stores color values for UI sections. Only some of this is actively used.</td>
+        </tr>
+        <tr>
+          <td><code>users</code></td>
+          <td><code>uID</code>, <code>uName</code>, <code>uPass</code>, <code>uTimeStamp</code></td>
+          <td>Stores content manager credentials.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Seeded content that matters right now</h3>
+    <ul>
+      <li>The About Me table has three rows. The first row starts empty, while rows 2 and 3 contain placeholder text.</li>
+      <li>The Colors table contains default section colors such as black for Menu and blue for About Me.</li>
+      <li>The Users table contains one login: username <code>ben</code> and password <code>jenkins</code>.</li>
+    </ul>
+
+    <div class="callout">
+      Passwords are stored in plain text. That is acceptable for a class exercise or prototype, but not for a production system.
+    </div>
+  </section>
+
+  <section id="front-end">
+    <h2>6. Front End and UI Behavior</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Styling</h3>
+        <p>The UI uses W3.CSS from the public CDN and relies heavily on utility classes from that library.</p>
+      </div>
+      <div class="card">
+        <h3>Images</h3>
+        <p>The gallery and avatar are static image files stored in the <code>images/</code> directory.</p>
+      </div>
+      <div class="card">
+        <h3>JavaScript</h3>
+        <p>Most JavaScript is inline inside the PHP pages. The dedicated <code>js/script.js</code> file is currently unused.</p>
+      </div>
+      <div class="card">
+        <h3>Editing UI</h3>
+        <p>The content manager builds its editing controls dynamically in JavaScript after successful login.</p>
+      </div>
+    </div>
+
+    <h3>Client-side behavior worth knowing</h3>
+    <ul>
+      <li><code>validateForm()</code> in <code>index.php</code> validates the contact form client-side, but the form currently posts to <code>/action_page.php</code>, which is not part of this repo.</li>
+      <li><code>resumeGen()</code> appears intended to fetch resume data with XHR, but it points to <code>resume.json</code>, while the actual file is <code>json/resumemodded.json</code>.</li>
+      <li>The resume section on the page is currently mostly hard-coded HTML, not generated from the database or the JSON file.</li>
+      <li>The content manager's editing controls are created by string-building a block of JavaScript and echoing it from PHP.</li>
+    </ul>
+  </section>
+
+  <section id="maintainer-notes">
+    <h2>7. Maintainer Notes: What Is Incomplete or Risky</h2>
+    <h3>Implemented but rough</h3>
+    <ul>
+      <li>The public About Me section is genuinely database-driven.</li>
+      <li>The Docker runtime and live reload setup are functional.</li>
+      <li>The content manager can update the About Me background color and one paragraph field.</li>
+    </ul>
+
+    <h3>Incomplete or stubbed work</h3>
+    <ul>
+      <li><code>generateMainContent()</code> is a TODO and is not used.</li>
+      <li><code>generateColor()</code> is empty.</li>
+      <li><code>generateResumeItem()</code> and <code>storeResumeItem()</code> are TODOs.</li>
+      <li><code>js/script.js</code> exists but is empty.</li>
+      <li><code>json/resumemodded.json</code> exists, but the current page does not consume it correctly.</li>
+      <li>There are additional SQL dump files in <code>sql/</code> that are not part of the current Docker startup path.</li>
+    </ul>
+
+    <h3>Architectural and security issues</h3>
+    <ul>
+      <li>Queries are built with direct string interpolation instead of prepared statements, which creates SQL injection risk.</li>
+      <li>Authentication uses GET parameters and has no session persistence.</li>
+      <li>Passwords are stored as plain text in the database.</li>
+      <li>The helper <code>loginCredentials()</code> ignores its parameters and reads directly from <code>$_GET</code>.</li>
+      <li><code>storeAboutMeParagraphs()</code> always updates row <code>aID = 1</code>, so only one paragraph is editable through the current implementation.</li>
+      <li>The code mixes HTML, SQL, JavaScript, and control logic directly in the same files, which makes maintenance harder.</li>
+    </ul>
+
+    <h3>Recommended reading order</h3>
+    <ol>
+      <li>Read <code>index.php</code> first to understand the public page.</li>
+      <li>Read <code>includes/dynamic.inc.php</code> next to see where the database interactions live.</li>
+      <li>Read <code>cmmodule.php</code> and <code>process.php</code> together to understand the content manager.</li>
+      <li>Read <code>docker-compose.yml</code>, <code>Dockerfile</code>, and <code>package.json</code> last to understand local development and deployment.</li>
+    </ol>
+
+    <div class="callout">
+      If you ever decide to refactor this project, the most defensible first step is to separate database access from rendering and replace raw SQL string interpolation with prepared statements.
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p class="small">
+    Generated as a maintainer-facing walkthrough for the A09 Jenkins repository.
+    Open this file directly in a browser to use it as a local guide while you read the code.
+  </p>
+</footer>
+</body>
+</html>

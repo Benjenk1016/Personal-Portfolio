@@ -14,10 +14,32 @@ putenv("TZ=US/Eastern");
 //
 define("INC_FOOTER", "includes/footer.inc.php");
 
+function getWebsiteUrl()
+{
+	$websiteUrl = getenv("WEBSITE_URL");
+
+	if ($websiteUrl === false || $websiteUrl === "") {
+		return "http://localhost:8080";
+	}
+
+	return $websiteUrl;
+}
+
+function renderLiveReloadScript()
+{
+	$liveReloadUrl = getenv("LIVE_RELOAD_URL");
+
+	if ($liveReloadUrl === false || $liveReloadUrl === "") {
+		return "";
+	}
+
+	return '<script async src="' . htmlspecialchars($liveReloadUrl, ENT_QUOTES, 'UTF-8') . '"></script>';
+}
+
 // General defines
 //
 define("WEBSITE_NAME", "A9_xxx");
-define("WEBSITE_URL", "localhost/A9_xxx");
+define("WEBSITE_URL", getWebsiteUrl());
 define("DEV_COMPANY_NAME", "");
 define("DEV_COMPANY_URL", "http://bgsu.edu");
 define("WEBSITE_FROMEMAIL", "YOURNAME@bgsu.edu");

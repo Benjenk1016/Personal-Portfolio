@@ -46,12 +46,9 @@ xhr.send();
 <?php
 include("./includes/define.inc.php");
 include("./includes/dynamic.inc.php");
-$database = "a09_Jenkins";
-$servername = "localhost";
-$username = "root";
-$password = "";
-// Create connection
-$conn = new mysqli($servername, $username, $password, $database);
+include("./includes/db.inc.php");
+
+$conn = getDbConnection();
 ?>
 <body class="w3-content" style="max-width:1300px">
 

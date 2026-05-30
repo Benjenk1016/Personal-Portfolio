@@ -29,12 +29,9 @@ function create(){
 //load the edit page
 function editpage(){
 include_once("./includes/dynamic.inc.php");
-$database = "a09_Jenkins";
-$servername = "localhost";
-$username = "root";
-$password = "";
-// Create connection
-$conn = new mysqli($servername, $username, $password, $database);
+include_once("./includes/db.inc.php");
+
+$conn = getDbConnection();
 $col = generateDefaColor(2,$conn);
 echo $col;
 
@@ -77,20 +74,21 @@ let head = document.getElementById("ccmm");
 ?>
 <?php
 include_once("./includes/dynamic.inc.php");
-$database = "a09_Jenkins";
-$servername = "localhost";
-$username = "root";
-$password = "";
+include_once("./includes/db.inc.php");
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $database);
- 
-//get the input data and store color
-$new = $_GET["colorpicker"];
-storeAboutMeColor($new, $conn);
-//get the text area input and store
-$para = $_GET["para1"];
-storeAboutMeParagraphs($para, $conn);
+if (isset($_GET["colorpicker"]) && isset($_GET["para1"])) {
+	$conn = getDbConnection();
+
+	//get the input data and store color
+	$new = $_GET["colorpicker"];
+	storeAboutMeColor($new, $conn);
+
+	//get the text area input and store
+	$para = $_GET["para1"];
+	storeAboutMeParagraphs($para, $conn);
+
+	$conn->close();
+}
 ?>
 
 
