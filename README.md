@@ -1,4 +1,4 @@
-# A09 Jenkins
+# Personal Portfolio
 
 This project runs in Docker instead of relying on a local XAMPP install. The application container serves the PHP files with Apache, a MariaDB container initializes the database from `sql/a09_jenkins.sql`, and a BrowserSync container provides hot reload for development.
 

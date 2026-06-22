@@ -8,10 +8,7 @@
 // Returns:		Returns HTML via return statement.
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //
-function generateMainContent($connection){
-	// TODO
-    return $content;
-}
+
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 // Function:    generateAboutMeParagraphs
@@ -33,8 +30,8 @@ $content = $rowPar["aPara1"];
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 // Function:    generateColor
 // Description: generate div with appropriate color
-// Parameters:  $blockName - name of the block for which we
-//				are generating the HTML with custom color
+// Parameters:  $blockName - name of the block for which is
+//				generating the HTML with custom color
 //				$connection - the DB connection
 // Returns:		HTML generated string
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
