@@ -130,39 +130,4 @@ function storeResumeItem($ary, $connection){
 // Returns:		true if user/pass found in DB, false otherwise
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //
-function loginCredentials($user, $pass, $connection){
-    $isOK = false;
-	$re = "/[a-z]+/";
-
-//get data from "users" table
-$sql = "SELECT uName, uPass FROM users";
-$result = $connection->query($sql);
-$row = $result->fetch_assoc();
-
-	//make sure input is correct
-	if (($_GET["userName"] == $row["uName"]) && ($_GET["passWord"] == $row["uPass"])){
-	//set isOK to true
-	$isOK = true;
-
-	//remove "login" widgets and labels
-	echo '<script type="text/javascript">
-	let remoce = document.querySelector("form");
-	remoce.remove();
-	
-	
-
-	</script>';
-
-	 //get the current color value
-	$color = generateDefaColor(2,$connection);
-	//add the new elements
-	
-	
-	//add submit button to form
-}
-
-return $isOK;
-
-}
-
 ?>
