@@ -5,34 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/master_style_sheet.css">
-<script>
-function resumeGen(){
-//use XML request 
-let xhr = new XMLHttpRequest();
-xhr.addEventListener("load", function () {
-  let ff = document.getElementById("st");
-  if (this.status === 200) {
-let json = this.response;
-ff.innerHTML = "<td>" + json.rYearRange +"</td>";
-  }
-}); 
-xhr.responseype = "json";
-xhr.open('GET', 'resume.json');
-xhr.send();
-
-
-}
-
-
-  </script>
+<script src="js/script.js" defer></script>
 </head>
-<?php
-include("./includes/define.inc.php");
-include("./includes/dynamic.inc.php");
-include("./includes/db.inc.php");
-
-$conn = getDbConnection();
-?>
 <body>
 
 <div class="page-shell">
@@ -85,7 +59,7 @@ $conn = getDbConnection();
         <div class="w3-third w3-center">
           <h3>Benjamin Jenkins</h3>
           <div class="status-badge">Kent State University • Fall 2026</div>
-          <img src="images\headshot.jpg" class="w3-margin w3-circle" alt="headshot" style="width:60%;max-width:260px;">
+          <img src="images/headshot.jpg" class="w3-margin w3-circle" alt="headshot" style="width:60%;max-width:260px;">
         </div>
         <div class="w3-twothird w3-left-align">
           <p>I am entering Kent State University in Fall 2026 as a B.S. in Information Technology student, specializing in web development. I am building a foundation in modern web technologies, software design, and practical problem-solving while continuing to grow through personal projects, hands-on learning, and real-world experience.</p>
@@ -109,7 +83,7 @@ $conn = getDbConnection();
 
     <div class="project-grid">
       <article class="project-card">
-        <img src="images\AGENTIC_PIC.png" alt="Agentic AI project preview">
+        <img src="images/AGENTIC_PIC.png" alt="Agentic AI project preview">
         <div class="project-copy">
           <h3>Agentic AI ETL Pipeline</h3>
           <p>An automation-focused project that explores intelligent data processing, practical workflow design, and software tooling for data-heavy tasks.</p>
@@ -117,7 +91,7 @@ $conn = getDbConnection();
       </article>
 
       <article class="project-card muted-card">
-        <img src="images\workout_pic.png" alt="Workout tracking project preview">
+        <img src="images/workout_pic.png" alt="Workout tracking project preview">
         <div class="project-copy">
           <h3>Workout Tracking App</h3>
           <p>A personal project designed around usability, routine tracking, and practical app structure for everyday productivity.</p>
@@ -138,11 +112,6 @@ $conn = getDbConnection();
             <th>Where</th>
           </tr>
           <tr class="w3-white" id="st">
-<script>
-//function to genterate resume content
-resumeGen;
-</script>
-
             <td>2026 - Present</td>
             <td>Warehouse Selector</td>
             <td>American Seaway Foods Bedford Heights, Ohio</td>
@@ -182,9 +151,8 @@ resumeGen;
   </div>
 </footer>
 
-<?php
-include("./includes/footer.inc.php");
-?>
+<p>&copy; 2026 Personal Portfolio | Developed by Ben Jenkins</p>
+<p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank" rel="noopener">w3.css</a></p>
 
 </div>
 
